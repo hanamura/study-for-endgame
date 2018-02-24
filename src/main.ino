@@ -1,51 +1,52 @@
 #include "Keyboard.h"
 
 #define PIN_LED 17
-#define PIN_A 3
-#define PIN_B 4
-#define KC_A 0x61
-#define KC_B 0x62
 
-bool aCurrState = LOW;
-bool aLastState = LOW;
-bool bCurrState = LOW;
-bool bLastState = LOW;
+const int numKeys = 2;
+
+const int pins[numKeys] = {3, 4};
+const byte codes[numKeys] = {0x61, 0x62};
+
+bool currState[numKeys];
+bool lastState[numKeys];
+
+int i;
 
 void setup() {
-  pinMode(PIN_A, INPUT);
-  pinMode(PIN_B, INPUT);
   pinMode(PIN_LED, OUTPUT);
+
+  for (i = 0; i < numKeys; i++) {
+    pinMode(pins[i], INPUT);
+    currState[i] = LOW;
+    lastState[i] = LOW;
+  }
 
   Serial.begin(9600);
   Keyboard.begin();
 }
 
 void loop() {
-  aCurrState = digitalRead(PIN_A);
+  for (i = 0; i < numKeys; i++) {
+    currState[i] = digitalRead(pins[i]);
 
-  if (aCurrState != aLastState) {
-    if (aCurrState == HIGH) {
-      Serial.println("A Down");
-      digitalWrite(PIN_LED, LOW);
-      Keyboard.press(KC_A);
-    } else {
-      Serial.println("A Up");
-      digitalWrite(PIN_LED, HIGH);
-      Keyboard.release(KC_A);
+    if (currState[i] != lastState[i]) {
+      Serial.print("Key: ");
+      Serial.print(i);
+      if (currState[i] == HIGH) {
+        Serial.println(" Down");
+        Keyboard.press(codes[i]);
+        if (i == 0) {
+          digitalWrite(PIN_LED, LOW);
+        }
+      } else {
+        Serial.println(" Up");
+        Keyboard.release(codes[i]);
+        if (i == 0) {
+          digitalWrite(PIN_LED, HIGH);
+        }
+      }
     }
-    aLastState = aCurrState;
-  }
 
-  bCurrState = digitalRead(PIN_B);
-
-  if (bCurrState != bLastState) {
-    if (bCurrState == HIGH) {
-      Serial.println("B Down");
-      Keyboard.press(KC_B);
-    } else {
-      Serial.println("B Up");
-      Keyboard.release(KC_B);
-    }
-    bLastState = bCurrState;
+    lastState[i] = currState[i];
   }
 }
