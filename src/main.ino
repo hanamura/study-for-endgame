@@ -1,13 +1,13 @@
 #include "Keyboard.h"
 
 const int numRows = 2;
-const int numCols = 2;
+const int numCols = 3;
 
 const int rowPins[numRows] = {3, 4};
-const int colPins[numCols] = {5, 6};
+const int colPins[numCols] = {5, 6, 7};
 const byte codes[numRows][numCols] = {
-  {0x61, 0x62},
-  {0x63, 0x64}
+  {0x61, 0x62, 0x63},
+  {0x64, 0x65, 0x66}
 };
 
 bool currState[numRows][numCols];
