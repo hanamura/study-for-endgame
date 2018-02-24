@@ -1,13 +1,13 @@
 #include "Keyboard.h"
 
 const int numRows = 2;
-const int numCols = 3;
+const int numCols = 2;
 
 const int rowPins[numRows] = {3, 4};
-const int colPins[numCols] = {5, 6, 7};
+const int colPins[numCols] = {5, 6};
 const byte codes[numRows][numCols] = {
-  {0x61, 0x62, 0x63},
-  {0x64, 0x65, 0x66}
+  {0x61, 0x62},
+  {0x63, 0x64}
 };
 
 bool currState[numRows][numCols];
@@ -21,15 +21,15 @@ void setup() {
   }
 
   for (i = 0; i < numCols; i++) {
-    pinMode(colPins[i], INPUT);
+    pinMode(colPins[i], INPUT_PULLUP);
   }
 
   for (i = 0; i < numRows; i++) {
     for (j = 0; j < numCols; j++) {
-      currState[i][j] = LOW;
-      lastState[i][j] = LOW;
+      currState[i][j] = HIGH;
+      lastState[i][j] = HIGH;
     }
-    digitalWrite(rowPins[i], LOW);
+    digitalWrite(rowPins[i], HIGH);
   }
 
   Serial.begin(9600);
@@ -38,7 +38,7 @@ void setup() {
 
 void loop() {
   for (i = 0; i < numRows; i++) {
-    digitalWrite(rowPins[i], HIGH);
+    digitalWrite(rowPins[i], LOW);
 
     for (j = 0; j < numCols; j++) {
       currState[i][j] = digitalRead(colPins[j]);
@@ -50,7 +50,7 @@ void loop() {
         Serial.print(j);
         Serial.print(")");
 
-        if (currState[i][j] == HIGH) {
+        if (currState[i][j] == LOW) {
           Serial.println(" Down");
           Keyboard.press(codes[i][j]);
         } else {
@@ -62,6 +62,6 @@ void loop() {
       lastState[i][j] = currState[i][j];
     }
 
-    digitalWrite(rowPins[i], LOW);
+    digitalWrite(rowPins[i], HIGH);
   }
 }
