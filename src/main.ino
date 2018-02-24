@@ -2,10 +2,10 @@
 
 #define PIN_LED 17
 
-const int numKeys = 2;
+const int numKeys = 3;
 
-const int pins[numKeys] = {3, 4};
-const byte codes[numKeys] = {0x61, 0x62};
+const int pins[numKeys] = {3, 4, 5};
+const byte codes[numKeys] = {0x61, 0x62, 0x63};
 
 bool currState[numKeys];
 bool lastState[numKeys];
