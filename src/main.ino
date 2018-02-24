@@ -2,6 +2,7 @@
 
 #define PIN_LED 17
 #define PIN_A 3
+#define KC_A 0x61
 
 bool aCurrState = LOW;
 bool aLastState = LOW;
@@ -24,11 +25,11 @@ void loop() {
   if (aCurrState == HIGH) {
     Serial.println("Push");
     digitalWrite(PIN_LED, LOW);
-    Keyboard.press(0x61);
+    Keyboard.press(KC_A);
   } else {
     Serial.println("Release");
     digitalWrite(PIN_LED, HIGH);
-    Keyboard.release(0x61);
+    Keyboard.release(KC_A);
   }
 
   aLastState = aCurrState;
