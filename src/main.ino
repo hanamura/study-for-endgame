@@ -1,13 +1,13 @@
 #include "Keyboard.h"
 
 #define PIN_LED 17
-#define PIN_SWITCH 3
+#define PIN_A 3
 
-bool currentState = LOW;
-bool lastState = LOW;
+bool aCurrState = LOW;
+bool aLastState = LOW;
 
 void setup() {
-  pinMode(PIN_SWITCH, INPUT);
+  pinMode(PIN_A, INPUT);
   pinMode(PIN_LED, OUTPUT);
 
   Serial.begin(9600);
@@ -15,13 +15,13 @@ void setup() {
 }
 
 void loop() {
-  currentState = digitalRead(PIN_SWITCH);
+  aCurrState = digitalRead(PIN_A);
 
-  if (currentState == lastState) {
+  if (aCurrState == aLastState) {
     return;
   }
 
-  if (currentState == HIGH) {
+  if (aCurrState == HIGH) {
     Serial.println("Push");
     digitalWrite(PIN_LED, LOW);
     Keyboard.press(0x61);
@@ -31,5 +31,5 @@ void loop() {
     Keyboard.release(0x61);
   }
 
-  lastState = currentState;
+  aLastState = aCurrState;
 }
